@@ -104,7 +104,7 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
 
 <script src="./goshop.js"></script>
 
- 
+
 
 <script>
 
@@ -206,7 +206,7 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
 
 
     <script>
-    // the scroll stuff
+      // the scroll stuff
       function doIt(theDiv) {
 
         gid(theDiv).scrollIntoView({ behavior: 'smooth' });
@@ -216,9 +216,9 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
     </script>
 
 
-    <div id="panelIntro" class="inDiv col1">
+    <div id="panelIntro" class="goDiv col1">
       <div>
-        <div class="inDiv" style="margin:auto">
+        <div class="goDiv" style="margin:auto">
           <!--   New + not used -->
           <button class="btn btn-primary" onclick="if(mobile()) hid(panelIntro)" type="button" id="dropdownMenuButton"
             style="border-style: none;  margin-top: 20px;border-radius: 16px; ">
@@ -226,7 +226,7 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
           </button>
         </div>
         <p></p>
-        <div class="inDiv" style="font-size: small">
+        <div class="goDiv" style="font-size: small">
           <p style="padding:10px">
             A user reference has been created for you.
             This should mean that the program will preserve
@@ -253,7 +253,7 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
         </div>
 
 
-        <div id="panelData" class="inDiv">
+        <div id="panelData" class="goDiv">
           <br>
           <div style="margin-top:100px;height:700px">
             <h4>Data</h4>
@@ -287,16 +287,45 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
     </div>
 
     <!-- second column -->
-    <div class="inDiv col2">
- 
-  
+    <div class="goDiv col2">
+
+
+
+      <div class="menuDiv" style="background-color: aliceblue;padding:10px">
+        <script>
+
+          function xx(){
+             it = Item.create("X");  
+            Button.createItem(it);
+            UI.showAllItems();
+          }
+          
+          </script>
+        <button onClick="xx()">New Item</button>
+        <button>xx</button>
+        <button>xx</button>
+      </div>
+
+      <div id="divItems"  style="padding:30px">
+        
+      </div>
+
+
+
+
     </div> <!--end second column -->
 
+
+
+
+
+
+
     <!-- third column -->
-    <div id="divDetails" class="inDiv col3">
-   
- 
-   
+    <div id="divDetails" class="goDiv col3">
+
+
+
     </div>
   </div>
 
@@ -307,5 +336,3 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
 </body>
 
 </html>
-
- 

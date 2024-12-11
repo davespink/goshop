@@ -12,9 +12,20 @@ let gItemArray = [];
 gItemArray.push(itemObject);
 
 
+
 Alert.show("it starts here");
 
-/*
+
+
+// fake some data
+
+
+Button.createItem(itemObject);
+
+ 
+//debugger;
+
+  
 if (!User.get()) {
   let stampx = new Date().getTime();
   let stamp = stampx.toString();
@@ -25,19 +36,12 @@ if (!User.get()) {
   Disk.loadCurrentData();
 }
 
-idUser.innerHTML = "<h6>" + User.get() + "</h6>";
-
-idVersion.innerHTML = getVersion();
+ 
 
 alertBox.addEventListener("animationend", () => { alertBox.classList.remove("animate"); });
 
-if (mobile()) {
-  let el = gid("panelData");
-  el.remove();
-  //hid(divDetails); hid(panelIntro);
-  topDiv.appendChild(el);
-}
-*/
+ 
+ 
 
 window.onbeforeunload = function () {
   Disk.saveCurrentData();
