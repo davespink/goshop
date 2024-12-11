@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--   
+
+Task list
+=========
+
+Think about code reuse and start on shopping module
+
+
+What about the children?
+
+Impliment delete for containers ( done, gives warning then deletes all descendants )
+
+On upload of photo change the breadcrumb picture as well ( done )
+
+Improve the alert system
+Produce a good sample - pick a style and make a house etc
+
+Learn git hub, can sneak in youtube vidoes
+
+Keep up exercise.
+
+Use wiki for test images!
+
+Incityo - 8/11/24
+ 
+
+- Error condition for go user and create user ( User.exists ) Now changed modus...
+ 
+- large circle type tree thing - figured out how, will do later
+
+- Need to look at Cordova
+- Start with npm
+- Look at how it works with javascript
+
+- Recode and polish existing codebase ( doing )
+
+- When delete an item, delete the photo from disk also
+ 
+
+A lot of no image, but also broken links
+https://gomakethings.com/handling-missing-images-with-vanilla-js/
+ 
+ 
+make good demos
+
+Delete container ask what happens to children. ( sort of )
+
+Prevent change container for home , id 0
+
+ Shortcut keys. Pending. Low priority.
+
+  Android version.Low priority atm . Maybe javascript to start with. Priority 10.
+
+
+  Trash can.
+
+ Better track of thumbnails to remove unwanted ones.
+
+ May need to $POST in which case
+
+ https://www.w3schools.com/php/php_superglobals_post.asp
+
+
+how to change stylesheets on the fly!!!
+https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page
+
+
+-->
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>GoShop</title>
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+  <link id="theCss" rel="stylesheet" href="./goshop.css">
+  <script>
+    // alert(screen.width);
+    if (screen.width < 500) {
+      // alert("mobile");
+      theCss.href = "./mingoshop.css";
+    }
+  </script>
+
+
+</head>
+
+<script src="./goshop.js"></script>
+
+ 
+
+<script>
+
+  // Long touch
+
+  /*
+
+  let onlongtouch = false;
+  let timer = false;
+  let duration = 800;
+  let touched = false;
+
+  function touchStart(evt) {
+    if (!timer) {
+      timer = setTimeout(onlongtouch, duration);
+      touched = evt.target;
+    }
+  }
+
+  function touchEnd() {
+    if (timer) {
+      clearTimeout(timer)
+      timer = false;
+    }
+  }
+
+
+  onlongtouch = function () {
+    //  touched.innerHTML = touched.id;
+
+    let buttonId = touched.id;
+
+    let id = buttonId.split("_");
+
+    xsetCurrentRoot(id[1]);
+
+
+    timer = false;
+    duration = 800;
+    touched = false;
+
+  }
+
+  */
+
+  async function readText(event) {
+    const file = event.target.files.item(0)
+    const text = await file.text();
+
+    //  document.getElementById("output").innerText = text
+    //alert(text);
+    let js = text;
+    gItemArray = JSON.parse(js);
+
+    paintBreadCrumbs(0);
+    Alert.show("done get upload");
+
+    chain_0.click();
+
+
+  }
+
+  function mobile() {
+    return screen.width < 500;
+  }
+
+
+
+</script>
+
+
+<div class="fixed">
+  <div style="margin-top:20px ;margin-bottom:20px;text-align: center;">
+    <div
+      style="width:90%;background-color:lightblue;margin:auto; margin-top:0px;  padding:20px;border-style: double;border-radius: 10px">
+      <button onclick="doIt('divSearch')">Crumbs</button>
+      <button onclick="doIt('divImages')">Images</button>
+      <button onclick="doIt('divDetails')">Details</button>
+      <button onclick="doIt('panelData')">Data</button>
+    </div>
+  </div>
+</div>
+
+
+<body>
+
+
+  <button id="alertBox" class="alert" onClick="alertBox.style.display='none';">
+    <p id="alertText" class="center">some text</p>
+  </button>
+
+
+
+
+
+
+  <div id="topDiv" class="topDiv">
+
+
+
+    <script>
+    // the scroll stuff
+      function doIt(theDiv) {
+
+        gid(theDiv).scrollIntoView({ behavior: 'smooth' });
+
+      }
+
+    </script>
+
+
+    <div id="panelIntro" class="inDiv col1">
+      <div>
+        <div class="inDiv" style="margin:auto">
+          <!--   New + not used -->
+          <button class="btn btn-primary" onclick="if(mobile()) hid(panelIntro)" type="button" id="dropdownMenuButton"
+            style="border-style: none;  margin-top: 20px;border-radius: 16px; ">
+            <h1>Got it!</h1>
+          </button>
+        </div>
+        <p></p>
+        <div class="inDiv" style="font-size: small">
+          <p style="padding:10px">
+            A user reference has been created for you.
+            This should mean that the program will preserve
+            any changes to the data in a multi user environment.
+            You may want to take a note of the reference number.
+          </p>
+
+
+          <button id="idUser" style="width:100%"></button>
+          <p></p>
+          <p>Use this link</p>
+
+          <p id="theLink" style="font-size:smaller;padding:10px"></p>
+
+          <p>And bookmark it</p>
+
+
+          <script>
+            let u = User.get();
+            href = "www.incityo.com/incitio/incitio.html?user=" + u;
+            theLink.innerHTML = href;
+          </script>
+
+        </div>
+
+
+        <div id="panelData" class="inDiv">
+          <br>
+          <div style="margin-top:100px;height:700px">
+            <h4>Data</h4>
+            <button class="btn bLink.href;tn-info btn-sm" style="width:70%;margin:3px" onclick="loadTestData()">Load
+              Test
+              Data</button>
+
+            <button class="btn btn-dark btn-sm" style="width:70%;margin:3px" onclick="up.click();showAllItems();">Upload
+              Data</button>
+            <div style="display:none">
+              <input type="file" id="up" onchange="readText(event)" />
+              <pre id="output"></pre>
+            </div>
+
+            <a id='a' download='JSONDownload.txt' type='text/txt'></a>
+            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick=" 
+                        const d = new Date();
+                        let text = d.toLocaleDateString() + ` ` + d.toLocaleTimeString();
+                        a.download='IncitioDownload '  +  text + '_' + User.get() + '.txt';          
+                        downloadData()">Download Data</button>
+
+            <button class="btn btn-danger btn-sm" style="width:70%;margin:3px"
+              onclick="localStorage.clear();alert('cleared storage')">clear storage</button>
+
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <!-- second column -->
+    <div class="inDiv col2">
+
+      <!-- Search-->
+      <div id="divSearch" class="inDiv" style="padding:10px;margin:auto;text-align: center;">
+
+
+        <div id="divVersion" class="inDiv" style="padding:10px">
+          <button id="idVersion" style="width:40%;margin-top: 5px;"></button>
+        </div>
+
+        <button id="none" class="btn btn-light" style="margin:10px; background-color:blanchedalmond;position:relative;
+                width: 80%;height: 15%; border-radius: 16px; box-shadow: 5px 5px 5px gray;">
+          <span class="btn-label" onclick="doSearch()"
+            style="position:absolute;top:0px; left:10px; margin-bottom: 20px;">
+            <i class="bi-search" style="font-size:30px"></i></span>
+
+          <input aria-label="Search inCitio" autocomplete="off" placeholder="Search inCitio" value="" name=""
+            type="text" id="search" style="padding: 0px;   float:right;
+              width: 90%;  background-color: rgb(219, 192, 192);
+               z-index: 6; left: 0px;" spellcheck="false" aria-haspopup="true" aria-live="off" aria-owns="gs_sbt50"
+            onkeydown="handle(event)" onclick=' divSearchResults.innerHTML="";search.value="";  '>
+        </button>
+
+        <script>
+          function handle(e) {
+            if (e.keyCode === 13) {
+              e.preventDefault(); // Ensure it is only this code that runs
+              doSearch();
+            }
+            let v = search.value;
+            if (v.length > 2)
+              search.innerHTML = "";
+            doSearch();
+          }
+        </script>
+        <!-- where the search results get displayed -->
+        <div id="divSearchResults">
+        </div>
+
+      </div>
+      <!-- end search -->
+
+      <!-- breadcrumbs -->
+      <div id="divBreadCrumbs" class="inDiv">
+
+        <div>
+
+          <div id="theName" style="float:center">button1</div>
+
+
+        </div>
+        <!-- chain -->
+        <div id="divChain" style="text-align:center">
+        </div>
+
+        <div>
+
+
+
+          <div class="inDiv">
+            <button class="action-button" onclick="makeNewItem('i')"
+              style="background-color: green;color:white">+item</button>
+            <button class="action-button" onclick="makeNewItem('c')"
+              style="background-color: blue;color:white">+container</button>
+            <button class="action-button" id="openContainer" onclick="openItem()"
+              style=" background-color: black;color:white">open</button>
+            <button class="action-button" id="explodeContainer" onclick="doExplode(getCurrentParentId())"
+              style=" background-color: white;color:black">show TOTAL content</button>
+          </div>
+
+          <div style="display:flex;padding:3px">
+            <div style="text-align: center;background-color:grey;width:50%">
+              <img id="theHoverPhoto" class="hover-bc-photo" src="./images/noimage.jpg">
+            </div>
+            <div class="inDiv">
+              <div>
+                this is sample text
+              </div>
+              <div style=" text-align:center;background-color:white ;margin-bottom: 2px;">
+                <button style="margin-bottom: 10px;">Click me</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!--    Items  -->
+        <div id="divItems" class="itemDiv">
+        </div>
+      </div>
+
+      <!-- grid of thumbnails -->
+      <div id="divImages" class="inDiv" style="text-align:center">
+        <div id="idHoverOver">
+          <button id="gridBreadcrumbs" style="width:80%;border-radius: 10px;margin:5px;">hover over image</button>
+          <div id="divPhotos" class="inDiv"
+            style="text-align:center; margin:0 auto; padding:0px;height:500px;overflow-y: scroll">
+          </div>
+        </div>
+      </div>
+
+    </div> <!--end second column -->
+
+    <!-- third column -->
+    <div id="divDetails" class="inDiv col3">
+      <!-- the photo stuff-->
+      <div class="inDiv" style="text-align:center;padding:5px">
+        <!--  The Photo Upload etc-->
+        <div style="margin-top: 30px;margin-bottom:10px">
+          <img id="thePhoto" style="width:90%;height:90%;border:solid">
+        </div>
+        <script>function doTest() {
+
+            thePhoto.src = forceImageLoad(thePhoto.src);
+
+          }</script>
+        <div>
+          <div style="display:none">
+            <input style="position:absolute;left:0px;margin-bottom:10px;" type="file" name="file" id="file"
+              onchange='btn_uploadImageFile.click()'>
+          </div>
+
+
+
+          <input type="button" id="btn_uploadImageFile" value="Upload" style="display:none"
+            onclick="uploadImageFile(); ">
+          <button id="xxx" onclick="doTest()" style="display: none;">xxx</button>
+
+          <button class="btn-light" onclick="file.click()">UPLOAD PHOTO</button>
+        </div>
+      </div>
+
+      <!-- the Details update button -->
+      <div class="inDiv" style="padding:5px">
+        <p style="color:black">Change Item Details</p>
+        <button type="button" id="updateButton" class="btn btn-default btn-primary"
+          onclick="updateItemFromForm();">Update</button>
+        <button type="button" class="btn btn-default btn-primary" onclick="deleteItem();">Delete</button>
+      </div>
+
+      <!-- The form -->
+      <div class="inDiv">
+        <div style="text-align:left;background-color: cornsilk;margin-left: 10px;">
+          <form>
+            <!--    Form   -->
+            <div class="form-group">
+              <label for="inName">Name:</label>
+              <input type="text" class="form-control" id="inName">
+            </div>
+
+            <div class="form-group">
+              <label for="inDescription">Description</label>
+              <textarea class="form-control" id="inDescription" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="inItemId">Item Id</label>
+              <input type="text" class="form-control" readonly="true" id="inItemId">
+            </div>
+            <div class="form-group">
+              <label for="inParentId">Parent Id</label>
+              <input type="text" class="form-control" readonly="true" id="inParentId">
+              <p></p>
+            </div>
+
+            <!-- Change parent -->
+            <div class="form-group">
+              <label for="newParent">Change container:</label>
+              <select id="newParent" onChange="updateButton.click">
+              </select>
+            </div>
+
+            <p></p>
+            <p></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--   STARTS HERE -->
+
+  <script src="./startup.js"></script>
+
+</body>
+
+</html>
+
+<script>
+
+  /*
+
+    OLD tree stuff
+
+  let arrTree = [];
+  
+          function test() {
+  
+            let level = -1;
+            treeItem = {
+              id: "0",
+              level: "0",
+              name: "home"
+  
+            };
+  
+  
+  
+            function findKids(obj) {
+              let kids = [];
+              for (let i = 0; i < gItemArray.length; i++) {
+                if (gItemArray[i].parentId == obj.id) {
+                  kids.push(gItemArray[i]);
+                }
+              }
+              return kids;
+            }
+  
+  
+            function makeTree(thisItemObject) {
+              level++;
+  
+              let x = Object.create(treeItem);
+  
+              x.id = thisItemObject.id;
+              x.level = level;
+              x.name = thisItemObject.name;
+              arrTree.push(x);
+  
+              //   Utils.doDebug(level);
+              //    Utils.doDebug(thisItemObject.id);
+              //    Utils.doDebug(thisItemObject.name);
+  
+  
+  
+              let obj = thisItemObject;
+              let kids = findKids(obj);
+              let l = kids.length;
+  
+              for (let i = 0; i < kids.length; i++) {
+                //    Utils.doDebug(kids[i].name);
+                makeTree(kids[i]);
+              }
+              level--;
+  
+            }
+  
+            let thisItemObject = gItemArray[0];
+            //   Utils.doDebug(thisItemObject.name);
+            makeTree(thisItemObject);
+            //     debugger;
+  
+            for (let j = 0; j < arrTree.length; j++) {
+              let id = arrTree[j].id;
+              let myItem = getItemObjectById(id);
+              createTreeButton(myItem, arrTree[j].level);
+            }
+          }
+  
+  */
+
+</script>
