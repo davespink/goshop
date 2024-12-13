@@ -18,14 +18,14 @@ Alert.show("it starts here");
 
 
 // fake some data
+Disk.loadCurrentData();
 
-
-Button.createItem(itemObject);
+//Button.createItem(itemObject);
 
  
 //debugger;
 
-  
+  /*
 if (!User.get()) {
   let stampx = new Date().getTime();
   let stamp = stampx.toString();
@@ -35,15 +35,12 @@ if (!User.get()) {
 } else {
   Disk.loadCurrentData();
 }
+*/
 
- 
 
 alertBox.addEventListener("animationend", () => { alertBox.classList.remove("animate"); });
 
- 
- 
-
 window.onbeforeunload = function () {
-  Disk.saveCurrentData();
+//  Disk.saveCurrentData();
   return null;
 }

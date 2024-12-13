@@ -1,7 +1,7 @@
 function getVersion() {
   return ("GoShop v1.0");
 }
- 
+
 function gid(id) {
   return document.getElementById(id);
 }
@@ -90,7 +90,7 @@ const User = {
 const Item = {
   // belongs in UI
   create(type) {
-    newItem = Object.create(gItemArray[0]);
+    let newItem = Object.create(gItemArray[0]);
 
     pName = prompt('Enter item name', 'unNamed');
     if (pName == null) return false;
@@ -101,12 +101,13 @@ const Item = {
     newItem.id = stamp;
     newItem.type = type;
 
-  //  newItem.parentId = getCurrentParentId();
+    //  newItem.parentId = getCurrentParentId();
 
     newItem.name = pName;
     newItem.description = pName + " description";
     newItem.image = "./images/noimage.jpg";
 
+    gItemArray.push(newItem);
     return newItem;
   },
   getChildren(id) {
@@ -157,6 +158,14 @@ const UI = {
   },
 
 
+    clearAllFocii() {
+
+    let bs = document.getElementsByClassName("hasFocus");
+    for (let i = 0; i < bs.length; i++) {
+      bs[i].classList.remove("hasFocus");
+    }
+  
+  },
 }
 
 const Button = {
@@ -175,8 +184,6 @@ const Button = {
       thisButton = gid("chain_" + id);
     return thisButton;
   },
- 
-
   createItem(itemObject) {
     let newButton = document.createElement('button');
     let el = document.getElementById("divItems");
@@ -185,50 +192,48 @@ const Button = {
     let badge;
     if (itemObject.type == "c") {
       buttonColor = `btn btn-primary`;
-     // badge = countDescendants(itemObject.id);
+      // badge = countDescendants(itemObject.id);
     } else {
       buttonColor = `btn btn-success`;
-      badge = "";
+      badge = "2";
     }
 
     buttonId = "item_" + itemObject.id;
     theHTML = `<button id="${buttonId}" onClick=buttonSelected("${buttonId}") 
-           class="${buttonColor} bc-button" >${itemObject.name} <span class="badge bg-dark">${badge}</span>
- 
+           class="${buttonColor} bc-button" >${itemObject.name} <span class="badge bg-dark" onclick="alert();" style="float:right;width:30px">${badge}</span>
+           <span class="badge bg-dark" style="float:left;width:30px">${badge}</span>
            </button>`;
-//ontouchstart=doTouch("${buttonId}")
+    //ontouchstart=doTouch("${buttonId}")
     newButton.outerHTML = theHTML;
 
     return buttonId;
 
   },
 
-
-
   createSearch(itemObject) {
 
     let newButton = document.createElement('button');
     document.getElementById("divSearchResults").appendChild(newButton);
-  
+
     // el.addEventListener("touchstart", touchStart);
     //  el.addEventListener("touchend", touchEnd);
-  
+
     if (itemObject.type == 'c')
       buttonColor = `btn btn-primary`;
     else
       buttonColor = `btn btn-success`;
-  
+
     buttonId = "search_" + itemObject.id;
-  
+
     theHTML = `<button id="${buttonId}" 
         onClick="searchButtonClick('${itemObject.id}')" 
          class="${buttonColor}" style="margin:5px">${itemObject.name}</button>`;
-  
+
     newButton.outerHTML = theHTML;
-  
+
     return newButton;
   },
-  
+
 }
 
 
@@ -248,20 +253,7 @@ function getItemObjectIndexById(id) {
 }
 ////////////////////////////////
 
-/*
-function breadCrumbs(id) {
-  alert("xx");
-
-  return;
-
-  gChainArray = [];
-  while (id != "?") {
-    id = discoverChain(id);
-    Utils.doDebug(id);
-  }
-}
-
-*/
+ 
 
 function doSearch() {
   // debugger;
@@ -282,37 +274,27 @@ function doSearch() {
   }
 }
 
- 
- 
-function clearAllFocii() {
 
+
+function clearAllFocii() {
+  UI.clearAllFocii();
+  return;
   let bs = document.getElementsByClassName("hasFocus");
   for (let i = 0; i < bs.length; i++) {
     bs[i].classList.remove("hasFocus");
   }
- 
-}
- 
 
- 
-function deleteItem() {
- 
-  gItemArray.splice(thisIndex, 1);
-
-  UI.paintBreadCrumbs(thisParent); // to remove button from view
-
-  // buttonSelected(thisParent);
-  Button.click("chain_" + thisParent);
-
-  showAllItems();
 }
 
- 
-
- 
 
 
  
+
+
+
+
+
+
 
 
 function clickButton(id) {
@@ -327,8 +309,8 @@ function clickButton(id) {
   b.click();
 }
 
- 
- 
+
+
 
 function compareItems(aItem, bItem) {
 
@@ -359,13 +341,6 @@ function compareAlpha(aItem, bItem) {
   }
   return 0;
 }
-
-
- 
- 
- 
-
- 
 
 function doDebug(message) {
   // if (message.length == 0) gid("debugWindow").innerHTML = ""; else
@@ -421,28 +396,24 @@ function createChainButton(itemObject) {
 function createItemButton(itemObject) {
   return Button.createItem(itemObject);
 }
- 
+
 
 
 
 
 //////  Back End //////////////
-
-
-
-
 const Disk = {
   saveCurrentData() {
 
- 
 
+ //   debugger;
     const theData = JSON.stringify(gItemArray);
 
     const xhttp = new XMLHttpRequest();
     var req = "savedatatodisk.php";
     let user = User.get();
-    if (user)
-      req += "?user=" + user;
+   // if (user)
+    //  req += "?user=" + user;
     ///alert(user + ' save');
     xhttp.open("POST", req);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -453,25 +424,25 @@ const Disk = {
   },
 
   loadCurrentData() {
-  
 
+//debugger;
     const xhttp = new XMLHttpRequest();
     let req = "loaduserdatafromdisk.php";
     let user = User.get();
     //   alert(user);
-    if (user)
-      req += "?user=" + user;
+   // if (user)
+    //  req += "?user=" + user;
     xhttp.open("POST", req);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.onload = function () {
       //showAlert(this.responseText);
       gItemArray = JSON.parse(this.responseText);
 
-  //    showAllItems();
-    //  paintBreadCrumbs(0);
+      UI.showAllItems();
+      //  paintBreadCrumbs(0);
       showAlert("done load from disk ", "extra");
 
-    //  chain_0.click();
+      //  chain_0.click();
     }
     xhttp.send();
   },
@@ -529,7 +500,7 @@ const Disk = {
       //let req = "./uploadincitio.php?stamp=" + idValue;
 
 
-        //  $('input[type="file"]').val(null);
+      //  $('input[type="file"]').val(null);
 
 
       let dir = User.dir();
@@ -603,7 +574,7 @@ const Disk = {
 
 function saveDataToDisk() {
 
-    alert("no save");
+  alert("no save");
   // Disk.saveData();
 }
 
@@ -615,6 +586,18 @@ function saveDataToDisk() {
 function uploadImageFile() {
 
   Disk.uploadImage();
+}
+
+function buttonSelected(id) {
+  clearAllFocii();
+  let el = gid(id);
+  el.classList.add("hasFocus");
+
+  let itemId = Button.idToItem(id);
+  let thisItem = Item.getById(itemId);
+
+  itemName.value = thisItem.name;
+  //console.log("click - " + id);
 }
 
 
@@ -638,9 +621,6 @@ function createUser() {
   xhttp.send("user=" + newUser);
 }
 
-
-
-
 // Disk operations to load or save data
 function downloadData() {
   Disk.downloadData();
@@ -663,76 +643,43 @@ function loadTestData() {
 }
 
 
-////// no longer used ///////////
 
-/*
-  function xuploadImageFile() {
-    function resize() {
-      //define the width to resize e.g 600px
-      var resize_width = 200;//without px
-  
-      //get the image selected
-      var item = file.files[0];
-  
-      //create a FileReader
-      var reader = new FileReader();
-  
-      //image turned to base64-encoded Data URI.
-      reader.readAsDataURL(item);
-      reader.name = item.name;//get the image's name
-      reader.size = item.size; //get the image's size
-      reader.onload = function (event) {
-        var img = new Image();//create a image
-        img.src = event.target.result;//result is base64-encoded Data URI
-  
-        //  alert(img.src.length);
-  
-        img.name = event.target.name;//set name (optional)
-        img.size = event.target.size;//set size (optional)
-        img.onload = function (el) {
-          var elem = document.createElement('canvas');//create a canvas
-  
-          //scale the image to 600 (width) and keep aspect ratio
-          var scaleFactor = resize_width / el.target.width;
-          elem.width = resize_width;
-          elem.height = el.target.height * scaleFactor;
-  
-          //draw in canvas
-          var ctx = elem.getContext('2d');
-          ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
-  
-          //get the base64-encoded Data URI from the resize image
-          var srcEncoded = ctx.canvas.toDataURL('image/png', 1);
-  
-          //assign it to thumb src
-          thePhoto.src = srcEncoded;
-          //   alert(srcEncoded.length);
-  
-          /*Now you can send "srcEncoded" to the server and
-          convert it to a png o jpg. Also can send
-          "el.target.name" that is the file's name.*/
+function DoNewItem() {
+  it = Item.create("I");
+  Button.createItem(it);
+  UI.showAllItems();
+}
 
-/*Also if you want to download tha image use this*/
-/*
-var a = document.createElement("a"); //Create <a>
-a.href =  srcEncoded; //set srcEncoded as src
-a.download = "myimage.png"; //set a name for the file
-a.click();
- 
-let idValue = getFormValue('inItemId');
-let theItemObject = getItemObjectById(idValue);
- 
-theItemObject.image = srcEncoded;
- 
-showAllItems();
- 
-}
-}
-}
- 
-resize();
-}
-*/
+function DoDeleteButton() {
+  let bs = document.getElementsByClassName("hasFocus");
+  let el = bs[0];
+  if(!el) {alert("choose item"); return;}
+  let id = Button.idToItem(el.id); 
+//el.remove();
+  let x = Item.getIndexById(id);
 
+  gItemArray.splice(x,1);
+
+  UI.showAllItems();
+
+
+}
+
+
+
+function DoUpdateButton() {
+  let bs = document.getElementsByClassName("hasFocus");
+  let el = bs[0];
+  if(!el) {alert("choose item"); return;}
+  let id = Button.idToItem(el.id); 
+//el.remove();
+  let theIndex = Item.getIndexById(id);
+
+  gItemArray[theIndex].name = itemName.value;
+
+  UI.showAllItems();
+
+  gid(el.id).classList.add("hasFocus");
+}
 
 

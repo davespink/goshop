@@ -95,7 +95,7 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
     // alert(screen.width);
     if (screen.width < 500) {
       // alert("mobile");
-      theCss.href = "./mingoshop.css";
+      // theCss.href = "./mingoshop.css";
     }
   </script>
 
@@ -275,6 +275,10 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
                         a.download='IncitioDownload '  +  text + '_' + User.get() + '.txt';          
                         downloadData()">Download Data</button>
 
+
+            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick="Disk.saveCurrentData();alert('saved')">save
+              to disk</button>
+
             <button class="btn btn-danger btn-sm" style="width:70%;margin:3px"
               onclick="localStorage.clear();alert('cleared storage')">clear storage</button>
 
@@ -291,23 +295,16 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
 
 
 
-      <div class="menuDiv" style="background-color: aliceblue;padding:10px">
-        <script>
-
-          function xx(){
-             it = Item.create("X");  
-            Button.createItem(it);
-            UI.showAllItems();
-          }
-          
-          </script>
-        <button onClick="xx()">New Item</button>
-        <button>xx</button>
-        <button>xx</button>
+      <div class="menuDiv" style="background-color: aliceblue;padding:20px;display:flex">
+        <button onClick="DoNewItem()">New Item</button>
+        <button onClick="DoDeleteButton()">Delete Item</button>
+        <label for="itemName">Name </label>
+        <input type="text" id="itemName" name="itemName" required minlength="4" maxlength="8" size="10" />
+        <button onclick="DoUpdateButton()">Update</button>
       </div>
 
-      <div id="divItems"  style="padding:30px">
-        
+      <div id="divItems" style="padding:30px">
+
       </div>
 
 

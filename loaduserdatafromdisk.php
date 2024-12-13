@@ -2,7 +2,7 @@
 
 if (isset($_GET['user'])) {
     $user = $_GET['user'];
-}
+}else $user = "";
 
 $fileName = "autosave_" . $user . ".txt";
  
