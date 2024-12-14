@@ -1,8 +1,10 @@
 const itemObject = {
   id: "0",
-  type: "c",
+  type: "i",
   name: "root",
   description: "the root",
+  inStock: "0",
+  toBuy: "0",
   image: "?"
 };
 

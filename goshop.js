@@ -152,19 +152,21 @@ const UI = {
 
     let showArray = gItemArray;
 
+ //   showArray.sort(compareAlpha);
+
     showArray.forEach(item => {
       Button.createItem(item);
     })
   },
 
 
-    clearAllFocii() {
+  clearAllFocii() {
 
     let bs = document.getElementsByClassName("hasFocus");
     for (let i = 0; i < bs.length; i++) {
       bs[i].classList.remove("hasFocus");
     }
-  
+
   },
 }
 
@@ -174,7 +176,6 @@ const Button = {
     b.click();
   },
   idToItem(buttonId) {
-    // debugger;
     let a = buttonId.split("_");
     return a[1];
   },
@@ -183,31 +184,6 @@ const Button = {
     if (!thisButton)
       thisButton = gid("chain_" + id);
     return thisButton;
-  },
-  createItem(itemObject) {
-    let newButton = document.createElement('button');
-    let el = document.getElementById("divItems");
-    el.appendChild(newButton);
-
-    let badge;
-    if (itemObject.type == "c") {
-      buttonColor = `btn btn-primary`;
-      // badge = countDescendants(itemObject.id);
-    } else {
-      buttonColor = `btn btn-success`;
-      badge = "2";
-    }
-
-    buttonId = "item_" + itemObject.id;
-    theHTML = `<button id="${buttonId}" onClick=buttonSelected("${buttonId}") 
-           class="${buttonColor} bc-button" >${itemObject.name} <span class="badge bg-dark" onclick="alert();" style="float:right;width:30px">${badge}</span>
-           <span class="badge bg-dark" style="float:left;width:30px">${badge}</span>
-           </button>`;
-    //ontouchstart=doTouch("${buttonId}")
-    newButton.outerHTML = theHTML;
-
-    return buttonId;
-
   },
 
   createSearch(itemObject) {
@@ -234,6 +210,54 @@ const Button = {
     return newButton;
   },
 
+  createItem(itemObject) {
+
+
+
+    let newButton = document.createElement('button');
+    let el = document.getElementById("divItems");
+    el.appendChild(newButton);
+
+    let Up = "\u21e7";
+    let Down = "\u21e9";
+
+    let buttonColor = `btn btn-success`;
+
+    let buttonId = "item_" + itemObject.id;
+    let badgeId = "badge_" + itemObject.id;
+    let theHTML = `<button id="${buttonId}" onClick=buttonSelected("${buttonId}") 
+           class="${buttonColor} bc-button" >${itemObject.name} <span   class="badge bg-dark inBadge" onClick=Button.itemUp("${buttonId}")  style="float:right">${Up}</span>
+           <span class="badge bg-dark inBadge" style="float:right">${Down}</span>
+           </button>`;
+
+    newButton.outerHTML = theHTML;
+
+
+    return buttonId;
+
+  },
+
+  itemUp(buttonId) {
+
+    let id = Button.idToItem(buttonId);
+
+    let idx = Item.getIndexById(id);
+
+    let thisItemIndex = gItemArray[idx];
+
+    gItemArray[idx] = gItemArray[idx - 1];
+
+
+    gItemArray[idx - 1] = thisItemIndex;
+
+    UI.showAllItems();
+
+
+
+  },
+
+
+
 }
 
 
@@ -253,7 +277,7 @@ function getItemObjectIndexById(id) {
 }
 ////////////////////////////////
 
- 
+
 
 function doSearch() {
   // debugger;
@@ -288,7 +312,7 @@ function clearAllFocii() {
 
 
 
- 
+
 
 
 
@@ -310,7 +334,7 @@ function clickButton(id) {
 }
 
 
-
+function f() { alert("xxx"); }
 
 function compareItems(aItem, bItem) {
 
@@ -327,8 +351,8 @@ function compareItems(aItem, bItem) {
 }
 function compareAlpha(aItem, bItem) {
 
-  let aName = getItemObjectById(aItem).name;
-  let bName = getItemObjectById(bItem).name;
+  let aName = aItem.name;
+  let bName = bItem.name;
 
   aName = aName.toUpperCase();
   bName = bName.toUpperCase();
@@ -406,13 +430,13 @@ const Disk = {
   saveCurrentData() {
 
 
- //   debugger;
+    //   debugger;
     const theData = JSON.stringify(gItemArray);
 
     const xhttp = new XMLHttpRequest();
     var req = "savedatatodisk.php";
     let user = User.get();
-   // if (user)
+    // if (user)
     //  req += "?user=" + user;
     ///alert(user + ' save');
     xhttp.open("POST", req);
@@ -425,12 +449,12 @@ const Disk = {
 
   loadCurrentData() {
 
-//debugger;
+    //debugger;
     const xhttp = new XMLHttpRequest();
     let req = "loaduserdatafromdisk.php";
     let user = User.get();
     //   alert(user);
-   // if (user)
+    // if (user)
     //  req += "?user=" + user;
     xhttp.open("POST", req);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -463,7 +487,7 @@ const Disk = {
       //showAlert(this.responseText);
       gItemArray = JSON.parse(this.responseText);
 
-      showAllItems();
+      UI.showAllItems();
       paintBreadCrumbs(0);
       showAlert("done load test data from disk ", "extra");
 
@@ -526,7 +550,7 @@ const Disk = {
             thePhoto.src = response;
             theItemObject.image = response;
 
-            showAllItems();
+            UI.showAllItems();
             var delayInMilliseconds = 100; // 0.1 seconds
 
             setTimeout(function () {
@@ -633,9 +657,7 @@ function loadTestData() {
 
   Disk.loadData("testdata.txt");
 
-  paintBreadCrumbs(0);
-
-  showAllItems();
+  UI.showAllItems();
 
   chain_0.click();
 
@@ -653,12 +675,12 @@ function DoNewItem() {
 function DoDeleteButton() {
   let bs = document.getElementsByClassName("hasFocus");
   let el = bs[0];
-  if(!el) {alert("choose item"); return;}
-  let id = Button.idToItem(el.id); 
-//el.remove();
+  if (!el) { alert("choose item"); return; }
+  let id = Button.idToItem(el.id);
+  //el.remove();
   let x = Item.getIndexById(id);
 
-  gItemArray.splice(x,1);
+  gItemArray.splice(x, 1);
 
   UI.showAllItems();
 
@@ -670,9 +692,9 @@ function DoDeleteButton() {
 function DoUpdateButton() {
   let bs = document.getElementsByClassName("hasFocus");
   let el = bs[0];
-  if(!el) {alert("choose item"); return;}
-  let id = Button.idToItem(el.id); 
-//el.remove();
+  if (!el) { alert("choose item"); return; }
+  let id = Button.idToItem(el.id);
+  //el.remove();
   let theIndex = Item.getIndexById(id);
 
   gItemArray[theIndex].name = itemName.value;

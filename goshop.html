@@ -7,66 +7,14 @@ Task list
 
 Think about code reuse and start on shopping module
 
+Here it is, goShop
 
-What about the children?
+Simple at the moment.
 
-Impliment delete for containers ( done, gives warning then deletes all descendants )
+1. Move item up or down in list.
+2. Make a stock buy position update thing.
 
-On upload of photo change the breadcrumb picture as well ( done )
-
-Improve the alert system
-Produce a good sample - pick a style and make a house etc
-
-Learn git hub, can sneak in youtube vidoes
-
-Keep up exercise.
-
-Use wiki for test images!
-
-Incityo - 8/11/24
  
-
-- Error condition for go user and create user ( User.exists ) Now changed modus...
- 
-- large circle type tree thing - figured out how, will do later
-
-- Need to look at Cordova
-- Start with npm
-- Look at how it works with javascript
-
-- Recode and polish existing codebase ( doing )
-
-- When delete an item, delete the photo from disk also
- 
-
-A lot of no image, but also broken links
-https://gomakethings.com/handling-missing-images-with-vanilla-js/
- 
- 
-make good demos
-
-Delete container ask what happens to children. ( sort of )
-
-Prevent change container for home , id 0
-
- Shortcut keys. Pending. Low priority.
-
-  Android version.Low priority atm . Maybe javascript to start with. Priority 10.
-
-
-  Trash can.
-
- Better track of thumbnails to remove unwanted ones.
-
- May need to $POST in which case
-
- https://www.w3schools.com/php/php_superglobals_post.asp
-
-
-how to change stylesheets on the fly!!!
-https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-apply-the-new-style-to-the-page
-
-
 -->
 
 
@@ -107,62 +55,18 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
 
 
 <script>
-
-  // Long touch
-
-  /*
-
-  let onlongtouch = false;
-  let timer = false;
-  let duration = 800;
-  let touched = false;
-
-  function touchStart(evt) {
-    if (!timer) {
-      timer = setTimeout(onlongtouch, duration);
-      touched = evt.target;
-    }
-  }
-
-  function touchEnd() {
-    if (timer) {
-      clearTimeout(timer)
-      timer = false;
-    }
-  }
-
-
-  onlongtouch = function () {
-    //  touched.innerHTML = touched.id;
-
-    let buttonId = touched.id;
-
-    let id = buttonId.split("_");
-
-    xsetCurrentRoot(id[1]);
-
-
-    timer = false;
-    duration = 800;
-    touched = false;
-
-  }
-
-  */
+ 
+ 
 
   async function readText(event) {
     const file = event.target.files.item(0)
     const text = await file.text();
 
-    //  document.getElementById("output").innerText = text
-    //alert(text);
     let js = text;
     gItemArray = JSON.parse(js);
 
-    paintBreadCrumbs(0);
+    // paintBreadCrumbs(0);
     Alert.show("done get upload");
-
-    chain_0.click();
 
 
   }
@@ -299,11 +203,11 @@ https://stackoverflow.com/questions/19844545/replacing-css-file-on-the-fly-and-a
         <button onClick="DoNewItem()">New Item</button>
         <button onClick="DoDeleteButton()">Delete Item</button>
         <label for="itemName">Name </label>
-        <input type="text" id="itemName" name="itemName" required minlength="4" maxlength="8" size="10" />
+        <input type="text" id="itemName" name="itemName" required minlength="1" maxlength="20" size="10" />
         <button onclick="DoUpdateButton()">Update</button>
       </div>
 
-      <div id="divItems" style="padding:30px">
+      <div id="divItems" class="itemDiv" style="padding:30px">
 
       </div>
 
