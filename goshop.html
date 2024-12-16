@@ -55,8 +55,8 @@ Simple at the moment.
 
 
 <script>
- 
- 
+
+
 
   async function readText(event) {
     const file = event.target.files.item(0)
@@ -165,7 +165,7 @@ Simple at the moment.
               Test
               Data</button>
 
-            <button class="btn btn-dark btn-sm" style="width:70%;margin:3px" onclick="up.click();showAllItems();">Upload
+            <button class="btn btn-dark btn-sm" style="width:70%;margin:3px" onclick="up.click();UI.showAllItems();">Upload
               Data</button>
             <div style="display:none">
               <input type="file" id="up" onchange="readText(event)" />
@@ -176,21 +176,18 @@ Simple at the moment.
             <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick=" 
                         const d = new Date();
                         let text = d.toLocaleDateString() + ` ` + d.toLocaleTimeString();
-                        a.download='IncitioDownload '  +  text + '_' + User.get() + '.txt';          
+                        a.download='goShopDownload '  +  text + '_' + User.get() + '.txt';          
                         downloadData()">Download Data</button>
 
 
-            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick="Disk.saveCurrentData();alert('saved')">save
+            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px"
+              onclick="Disk.saveCurrentData();alert('saved')">save
               to disk</button>
 
             <button class="btn btn-danger btn-sm" style="width:70%;margin:3px"
               onclick="localStorage.clear();alert('cleared storage')">clear storage</button>
-
           </div>
         </div>
-
-
-
       </div>
     </div>
 
@@ -198,21 +195,68 @@ Simple at the moment.
     <div class="goDiv col2">
 
 
+      <!--  https://www.svgrepo.com/ -->
+      <div class="goDiv" style="padding:5px">
 
-      <div class="menuDiv" style="background-color: aliceblue;padding:20px;display:flex">
-        <button onClick="DoNewItem()">New Item</button>
-        <button onClick="DoDeleteButton()">Delete Item</button>
-        <label for="itemName">Name </label>
-        <input type="text" id="itemName" name="itemName" required minlength="1" maxlength="20" size="10" />
-        <button onclick="DoUpdateButton()">Update</button>
+        <button class="bg-light goBadge" onclick="DoDeleteButton()">
+          <image src="images/trash.png" style="width:30px; height:30px">
+        </button>
+        <button class="bg-light goBadge">
+          <image src="images/plus.png" style="width:30px; height:30px">
+        </button>
+
+        <button onclick="DoUpdateButton()" class="bg-light goBadge" style="width:55px;height:55px;padding:0px">
+
+          <image src="images/ok.png" style="width:45px; height:45px">
+        </button>
+
+        <button class="bg-light goBadge" onclick="Button.itemUp()" style="float:right">
+          <image src="images/up.png" style="width:30px; height:30px">
+        </button>
+        <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
+          <image src="images/up.png" style="width:30px; height:30px">
+        </button>
+        
+        <div style="background-color: aliceblue;margin-top: 10px;">
+
+          <table style="width:80%">
+            <tr>
+              <td  style="height:10px">Name</td>
+              <td></td>
+              <td style="width:300px;padding:0px;margin:0px"><input id="itemName" type="text" style="padding:0px;margin:2px"></td>
+            
+            </tr>
+
+            <tr>
+              <td>in stock</td>
+              <td>-</td>
+              <td ><button>X</button><input id="inStock" maxlength="6" style="width:50px;  padding:0px;margin:2px"><button>Y</button></td>
+              <td>+</td>
+            </tr>
+
+
+            <tr>
+              <td>buy</td>
+              <td>-</td>
+              <td><button>X</button><input id="toBuy" maxlength="6" style="width:50px;  padding:0px;margin:2px"><button>Y</button></td>
+              <td>+</td>
+            </tr>
+
+          </table>
+        </div>
+
+
+
       </div>
 
-      <div id="divItems" class="itemDiv" style="padding:30px">
+
+
+
+
+
+      <div id="divItems" class="itemDiv" style="margin-top: 60px;">
 
       </div>
-
-
-
 
     </div> <!--end second column -->
 

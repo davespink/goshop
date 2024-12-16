@@ -15,7 +15,7 @@ gItemArray.push(itemObject);
 
 
 
-Alert.show("it starts here");
+//Alert.show("it starts here");
 
 
 
@@ -43,6 +43,6 @@ if (!User.get()) {
 alertBox.addEventListener("animationend", () => { alertBox.classList.remove("animate"); });
 
 window.onbeforeunload = function () {
-//  Disk.saveCurrentData();
+  Disk.saveCurrentData();
   return null;
 }

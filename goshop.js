@@ -152,7 +152,7 @@ const UI = {
 
     let showArray = gItemArray;
 
- //   showArray.sort(compareAlpha);
+    //   showArray.sort(compareAlpha);
 
     showArray.forEach(item => {
       Button.createItem(item);
@@ -211,9 +211,6 @@ const Button = {
   },
 
   createItem(itemObject) {
-
-
-
     let newButton = document.createElement('button');
     let el = document.getElementById("divItems");
     el.appendChild(newButton);
@@ -226,7 +223,7 @@ const Button = {
     let buttonId = "item_" + itemObject.id;
     let badgeId = "badge_" + itemObject.id;
     let theHTML = `<button id="${buttonId}" onClick=buttonSelected("${buttonId}") 
-           class="${buttonColor} bc-button" >${itemObject.name} <span   class="badge bg-dark inBadge" onClick=Button.itemUp("${buttonId}")  style="float:right">${Up}</span>
+           class="${buttonColor} bc-button" >${itemObject.name} <span   class="badge bg-dark inBadge" style="float:right">${Up}</span>
            <span class="badge bg-dark inBadge" style="float:right">${Down}</span>
            </button>`;
 
@@ -237,26 +234,43 @@ const Button = {
 
   },
 
-  itemUp(buttonId) {
+  itemUp() {
 
+    let buttonId = getFocusButtonId();
+    let id = Button.idToItem(buttonId);
+
+    let idx = Item.getIndexById(id);
+    if(!idx) return;
+    let thisItemIndex = gItemArray[idx];
+
+    gItemArray[idx] = gItemArray[idx - 1];
+    gItemArray[idx - 1] = thisItemIndex;
+
+    UI.showAllItems();
+    clearAllFocii();
+    gid(buttonId).classList.add('hasFocus');
+
+  },
+
+  itemDown() {
+
+    let buttonId = getFocusButtonId();
     let id = Button.idToItem(buttonId);
 
     let idx = Item.getIndexById(id);
 
+    if (idx + 1 == gItemArray.length) return;
+ 
     let thisItemIndex = gItemArray[idx];
 
-    gItemArray[idx] = gItemArray[idx - 1];
-
-
-    gItemArray[idx - 1] = thisItemIndex;
+    gItemArray[idx] = gItemArray[idx + 1];
+    gItemArray[idx + 1] = thisItemIndex;
 
     UI.showAllItems();
-
-
+    clearAllFocii();
+    gid(buttonId).classList.add('hasFocus');
 
   },
-
-
 
 }
 
@@ -312,29 +326,15 @@ function clearAllFocii() {
 
 
 
-
-
-
-
-
-
-
-
-
 function clickButton(id) {
-
-  let buttonId = "chain_" + id;
-  let b = gid(buttonId);
-
-  if (!b)
-    buttonId = "item_" + id;
+  buttonId = "item_" + id;
   b = gid(buttonId);
 
   b.click();
 }
 
 
-function f() { alert("xxx"); }
+
 
 function compareItems(aItem, bItem) {
 
@@ -464,7 +464,7 @@ const Disk = {
 
       UI.showAllItems();
       //  paintBreadCrumbs(0);
-      showAlert("done load from disk ", "extra");
+      //   showAlert("done load from disk ", "extra");
 
       //  chain_0.click();
     }
@@ -621,7 +621,9 @@ function buttonSelected(id) {
   let thisItem = Item.getById(itemId);
 
   itemName.value = thisItem.name;
-  //console.log("click - " + id);
+  inStock.value = thisItem.inStock;
+  itemName.value = thisItem.name;
+  toBuy.value = thisItem.toBuy;
 }
 
 
@@ -672,19 +674,19 @@ function DoNewItem() {
   UI.showAllItems();
 }
 
-function DoDeleteButton() {
+function getFocusButtonId() {
   let bs = document.getElementsByClassName("hasFocus");
   let el = bs[0];
   if (!el) { alert("choose item"); return; }
-  let id = Button.idToItem(el.id);
-  //el.remove();
-  let x = Item.getIndexById(id);
+  return el.id;
+}
 
-  gItemArray.splice(x, 1);
-
-  UI.showAllItems();
-
-
+function DoDeleteButton() {
+  let itBe;
+  if (itBe = getFocusButtonId()) {
+    gItemArray.splice(Item.getIndexById(itBe), 1);
+    UI.showAllItems();
+  }
 }
 
 
@@ -698,6 +700,8 @@ function DoUpdateButton() {
   let theIndex = Item.getIndexById(id);
 
   gItemArray[theIndex].name = itemName.value;
+  gItemArray[theIndex].inStock = inStock.value;
+  gItemArray[theIndex].toBuy = toBuy.value;
 
   UI.showAllItems();
 
