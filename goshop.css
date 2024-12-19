@@ -15,7 +15,7 @@
 
  .topDiv {
 
-   height: fit-content;
+   height: 700px; 
    text-align: center;
 
    margin: auto;
@@ -33,12 +33,15 @@
  th,
  tr,
  td {
+  
    border: 1px solid black;
-   font-weight: 200;
+   font-weight: 400;
+   font-size:large;
    margin-left: 10%;
    margin-right: 30%;
    padding: 0px;
-   margin: 2px"
+   margin: 2px;
+   text-align: left;
 
  }
 

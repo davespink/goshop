@@ -143,6 +143,10 @@ const Item = {
 const UI = {
   showAllItems() {
 
+
+    let bs = document.getElementsByClassName("hasFocus");
+    let theFocus = bs[0];
+
     let el = document.getElementById("divItems");
     el.innerHTML = "";
 
@@ -157,6 +161,12 @@ const UI = {
     showArray.forEach(item => {
       Button.createItem(item);
     })
+
+    // restore focus
+    if (theFocus)
+      gid(theFocus.id).classList.add("hasFocus");
+
+
   },
 
 
@@ -215,16 +225,17 @@ const Button = {
     let el = document.getElementById("divItems");
     el.appendChild(newButton);
 
-    let Up = "\u21e7";
-    let Down = "\u21e9";
+    // let Up = "\u21e7";
+    // let Down = "\u21e9";
 
     let buttonColor = `btn btn-success`;
 
     let buttonId = "item_" + itemObject.id;
-    let badgeId = "badge_" + itemObject.id;
+    let badgeLeftId = "badgeLeft_" + itemObject.id;
+    let badgeRightId = "badgeRight_" + itemObject.id;
     let theHTML = `<button id="${buttonId}" onClick=buttonSelected("${buttonId}") 
-           class="${buttonColor} bc-button" >${itemObject.name} <span   class="badge bg-dark inBadge" style="float:right">${Up}</span>
-           <span class="badge bg-dark inBadge" style="float:right">${Down}</span>
+           class="${buttonColor} bc-button" >${itemObject.name} <span   class="badge bg-dark inBadge" style="float:left">${itemObject.inStock}</span>
+           <span class="badge bg-primary inBadge" style="float:right">${itemObject.toBuy}</span>
            </button>`;
 
     newButton.outerHTML = theHTML;
@@ -240,7 +251,7 @@ const Button = {
     let id = Button.idToItem(buttonId);
 
     let idx = Item.getIndexById(id);
-    if(!idx) return;
+    if (!idx) return;
     let thisItemIndex = gItemArray[idx];
 
     gItemArray[idx] = gItemArray[idx - 1];
@@ -260,7 +271,7 @@ const Button = {
     let idx = Item.getIndexById(id);
 
     if (idx + 1 == gItemArray.length) return;
- 
+
     let thisItemIndex = gItemArray[idx];
 
     gItemArray[idx] = gItemArray[idx + 1];
@@ -428,8 +439,6 @@ function createItemButton(itemObject) {
 //////  Back End //////////////
 const Disk = {
   saveCurrentData() {
-
-
     //   debugger;
     const theData = JSON.stringify(gItemArray);
 
@@ -459,14 +468,11 @@ const Disk = {
     xhttp.open("POST", req);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.onload = function () {
-      //showAlert(this.responseText);
+
       gItemArray = JSON.parse(this.responseText);
 
       UI.showAllItems();
-      //  paintBreadCrumbs(0);
-      //   showAlert("done load from disk ", "extra");
 
-      //  chain_0.click();
     }
     xhttp.send();
   },

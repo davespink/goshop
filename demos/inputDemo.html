@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropdown ComboBox like Windows</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="comboInput">Choose or enter a value:</label>
+        <input list="comboOptions" id="comboInput" name="comboInput" placeholder="Type or select">
+        <datalist id="comboOptions">
+            <option value="aaaa">
+            <option value="aabcd">
+            <option value="a">
+        </datalist>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('myForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const value = document.getElementById('comboInput').value;
+        alert('You entered or selected: ' + value);
+    });
+});
+
+
+
+</script>
+</body>
+</html>

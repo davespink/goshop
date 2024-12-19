@@ -65,7 +65,7 @@ Simple at the moment.
     let js = text;
     gItemArray = JSON.parse(js);
 
-    // paintBreadCrumbs(0);
+    UI.showAllItems();
     Alert.show("done get upload");
 
 
@@ -122,7 +122,7 @@ Simple at the moment.
 
     <div id="panelIntro" class="goDiv col1">
       <div>
-        <div class="goDiv" style="margin:auto">
+        <div class="goDiv" style="margin:auto;display:none">
           <!--   New + not used -->
           <button class="btn btn-primary" onclick="if(mobile()) hid(panelIntro)" type="button" id="dropdownMenuButton"
             style="border-style: none;  margin-top: 20px;border-radius: 16px; ">
@@ -130,7 +130,7 @@ Simple at the moment.
           </button>
         </div>
         <p></p>
-        <div class="goDiv" style="font-size: small">
+        <div class="goDiv" style="font-size: small;display:none">
           <p style="padding:10px">
             A user reference has been created for you.
             This should mean that the program will preserve
@@ -157,37 +157,12 @@ Simple at the moment.
         </div>
 
 
-        <div id="panelData" class="goDiv">
-          <br>
-          <div style="margin-top:100px;height:700px">
-            <h4>Data</h4>
-            <button class="btn bLink.href;tn-info btn-sm" style="width:70%;margin:3px" onclick="loadTestData()">Load
-              Test
-              Data</button>
-
-            <button class="btn btn-dark btn-sm" style="width:70%;margin:3px" onclick="up.click();UI.showAllItems();">Upload
-              Data</button>
-            <div style="display:none">
-              <input type="file" id="up" onchange="readText(event)" />
-              <pre id="output"></pre>
-            </div>
-
-            <a id='a' download='JSONDownload.txt' type='text/txt'></a>
-            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick=" 
-                        const d = new Date();
-                        let text = d.toLocaleDateString() + ` ` + d.toLocaleTimeString();
-                        a.download='goShopDownload '  +  text + '_' + User.get() + '.txt';          
-                        downloadData()">Download Data</button>
 
 
-            <button class="btn btn-primary btn-sm" style="width:70%;margin:3px"
-              onclick="Disk.saveCurrentData();alert('saved')">save
-              to disk</button>
 
-            <button class="btn btn-danger btn-sm" style="width:70%;margin:3px"
-              onclick="localStorage.clear();alert('cleared storage')">clear storage</button>
-          </div>
-        </div>
+
+
+
       </div>
     </div>
 
@@ -196,7 +171,8 @@ Simple at the moment.
 
 
       <!--  https://www.svgrepo.com/ -->
-      <div class="goDiv" style="padding:5px">
+      <div class="goDiv">
+
 
         <button class="bg-light goBadge" onclick="DoDeleteButton()">
           <image src="images/trash.png" style="width:30px; height:30px">
@@ -216,62 +192,104 @@ Simple at the moment.
         <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
           <image src="images/up.png" style="width:30px; height:30px">
         </button>
-        
-        <div style="background-color: aliceblue;margin-top: 10px;">
 
-          <table style="width:80%">
+        <div style="background-color: aliceblue;margin-top: 10px;padding:6px;display:inline-flex">
+
+          <button class="bg-light goBadge" onclick="Button.itemDown()" style="float:left;transform: rotate(180deg);">
+            <image src="images/up.png" style="width:30px; height:30px">
+          </button>
+
+
+          <table style="width:20px">
             <tr>
-              <td  style="height:10px">Name</td>
-              <td></td>
-              <td style="width:300px;padding:0px;margin:0px"><input id="itemName" type="text" style="padding:0px;margin:2px"></td>
-            
+              <td style="height:10px">Name</td>
+
+              <td style="width:100px;padding:0px;margin:0px">
+                <input id="itemName" type="text" size="10" maxlength="18"
+                  style="padding:0px;margin:2px" ></td>
+
             </tr>
 
-            <tr>
+            <tr style="padding:0px">
               <td>in stock</td>
-              <td>-</td>
-              <td ><button>X</button><input id="inStock" maxlength="6" style="width:50px;  padding:0px;margin:2px"><button>Y</button></td>
-              <td>+</td>
+              <td style="padding:0;margin-left:0px;margin-right:0px">
+
+                <button onclick="inStock.value--;UI.showAllItems()" style="margin-left:0px">-</button>
+                <input type="number" id="inStock" onclick="inStock.select()" 
+                value="0" min="-10" max="100" size="3" maxlength="3" style="margin-left:0px;width:50px">
+                <button onclick="inStock.value++;DoUpdateButton();UI.showAllItems()" style="margin-left:-15px">+</button>
+
+              </td>
+
+
+
+
             </tr>
 
 
             <tr>
-              <td>buy</td>
-              <td>-</td>
-              <td><button>X</button><input id="toBuy" maxlength="6" style="width:50px;  padding:0px;margin:2px"><button>Y</button></td>
-              <td>+</td>
+              <td>to buy</td>
+
+              <td>
+                
+                <button onclick="toBuy.value--;UI.showAllItems()" style="margin-right:-15px">-</button>
+                <input type="number" id="toBuy" onclick="toBuy.select()" 
+                value="0" min="-10" max="100" size="3" maxlength="3" style="width:50px">
+                <button onclick="toBuy.value++;UI.showAllItems()" style="margin-left:-15px">+</button>
+
             </tr>
 
           </table>
+
+
+          <button class="goBadge" style="float:right; ">xx</button>
+
         </div>
-
-
-
       </div>
 
 
-
-
-
-
-      <div id="divItems" class="itemDiv" style="margin-top: 60px;">
+      <div id="divItems" class="itemDiv" style="margin-top: 10px;">
 
       </div>
-
-    </div> <!--end second column -->
-
-
-
-
-
-
-
-    <!-- third column -->
-    <div id="divDetails" class="goDiv col3">
-
-
 
     </div>
+
+
+
+    <div id="panelData" class="goDiv">
+      <br>
+      <div style="margin-top:10px;margin-bottom:10px;">
+        <h4>Data</h4>
+        <button class="btn bLink.href;tn-info btn-sm" style="width:70%;margin:3px" onclick="loadTestData()">Load
+          Test
+          Data</button>
+
+        <button class="btn btn-dark btn-sm" style="width:70%;margin:3px" onclick="up.click();UI.showAllItems();">Upload
+          Data</button>
+        <div style="display:none">
+          <input type="file" id="up" onchange="readText(event)" />
+          <pre id="output"></pre>
+        </div>
+
+        <a id='a' download='JSONDownload.txt' type='text/txt'></a>
+        <button class="btn btn-primary btn-sm" style="width:70%;margin:3px" onclick=" 
+                    const d = new Date();
+                    let text = d.toLocaleDateString() + ` ` + d.toLocaleTimeString();
+                    a.download='goShopDownload '  +  text + '_' + User.get() + '.txt';          
+                    downloadData()">Download Data</button>
+
+
+        <button class="btn btn-primary btn-sm" style="width:70%;margin:3px"
+          onclick="Disk.saveCurrentData();alert('saved')">save
+          to disk</button>
+
+        <button class="btn btn-danger btn-sm" style="width:70%;margin:3px"
+          onclick="localStorage.clear();alert('cleared storage')">clear storage</button>
+      </div>
+    </div>
+
+
+
   </div>
 
   <!--   STARTS HERE -->

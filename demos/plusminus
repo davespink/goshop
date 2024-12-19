@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Numeric Input with Increment/Decrement Buttons</title>
+</head>
+
+
+<style>
+
+
+.numeric-input {
+    display: inline-flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.numeric-input button, .numeric-input input {
+    height: 30px;
+    font-size: 16px;
+    margin: 0;
+    padding: 0 10px;
+    border: none;
+}
+
+.numeric-input button {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.numeric-input input {
+    width: 50px;
+    text-align: center;
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('numericInput');
+    const decrement = document.getElementById('decrement');
+    const increment = document.getElementById('increment');
+    const min = parseInt(input.getAttribute('min') || "0", 10);
+    const max = parseInt(input.getAttribute('max') || "Infinity", 10);
+
+    // Function to update value
+    function updateValue(change) {
+        let currentValue = parseInt(input.value, 10) || 0;
+        let newValue = currentValue + change;
+        if (newValue >= min && newValue <= max) {
+            input.value = newValue;
+        }
+    }
+
+    // Event listeners for buttons
+    decrement.addEventListener('click', function() {
+        updateValue(-1);
+    });
+
+    increment.addEventListener('click', function() {
+        updateValue(1);
+    });
+
+    // Optional: Handle keyboard input for increment/decrement
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp') {
+            updateValue(1);
+            e.preventDefault(); // Prevent cursor movement
+        } else if (e.key === 'ArrowDown') {
+            updateValue(-1);
+            e.preventDefault();
+        }
+    });
+});
+</script>
+
+
+<body>
+    <div class="numeric-input">
+    
+        <input type="number" id="numericInput" value="0" min="0" max="100">
+  
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
